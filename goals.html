@@ -1,10 +1,161 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Goals - Budget Calendar</title>
-  <link rel="stylesheet" href="css/project.css">
+  <link rel="stylesheet" href="css/project.css"/>
+  <style>
+    .hero-banner {
+      background: linear-gradient(90deg, var(--secondary), var(--primary));
+      color: var(--text-light);
+      padding: 40px;
+      border-radius: 8px;
+      margin: 20px;
+      text-align: center;
+    }
+
+    .hero-banner h2 {
+      font-size: 2.2rem;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .hero-banner p {
+      font-size: 1.1rem;
+      line-height: 1.5;
+    }
+
+    .content-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+      padding: 40px;
+    }
+
+    .goal-form {
+      background-color: #142030;
+      color: var(--text-light);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    .goal-form h3 {
+      color: var(--accent);
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .form-row.full {
+      grid-template-columns: 1fr;
+    }
+
+    .form-field label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .form-field input,
+    .form-field select,
+    .form-field textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #3a4457;
+      background-color: #101a2e;
+      color: var(--text-light);
+      font-size: 1rem;
+    }
+
+    .form-field input:focus,
+    .form-field select:focus,
+    .form-field textarea:focus {
+      border-color: var(--accent);
+      outline: none;
+      box-shadow: 0 0 6px var(--accent);
+    }
+
+    .checkbox-wrap {
+      display: flex;
+      align-items: center;
+      height: 42px;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 12px;
+      background: var(--cta);
+      color: var(--white);
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.2s, transform 0.2s;
+    }
+
+    .submit-btn:hover {
+      background-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .right-column {
+      text-align: center;
+    }
+
+    .calendar-image {
+      max-width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 0 12px var(--accent);
+      margin-bottom: 20px;
+    }
+
+    .calendar-info-boxes {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .calendar-box {
+      background-color: var(--primary);
+      color: var(--text-light);
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.2s, background-color 0.2s;
+      flex: 1;
+    }
+
+    .calendar-box:hover {
+      transform: translateY(-5px);
+      background-color: var(--accent);
+    }
+
+    footer {
+      background-color: var(--secondary);
+      color: var(--text-dark);
+      text-align: center;
+      padding: 15px;
+      width: 100%;
+    }
+
+    @media (max-width: 720px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
   <div id="wrapper">
@@ -12,67 +163,86 @@
       <h1 class="site-title">Save Path</h1>
       <nav class="top-nav">
         <a href="index.html" class="home-link">Home</a>
-
-        <div class="controls">
-          <label for="nav-select">Explore:</label>
-          <select id="nav-select">
-            <option value=""> </option>
-            <option value="dashboard.html">Dashboard</option>
-            <option value="visuals.html">Visuals</option>
-            <option value="goals.html">Goals</option>
-            <option value="calendar.html">Calendar</option>
-          </select>
-        </div>
-
+        <a href="dashboard.html" class="nav-link">Dashboard</a>
+        <a href="visuals.html" class="nav-link">Visuals</a>
+        <a href="goals.html" class="nav-link">Goals</a>
+        <a href="calendar.html" class="nav-link">Calendar</a>
         <a href="quickadd.html" class="quick-add-btn">+ Quick Add</a>
       </nav>
     </header>
 
     <main>
+      <section class="hero-banner">
+        <div>
+          <h2>Track Your Goals</h2>
+          <p>Set, monitor, and achieve your financial milestones with clarity and motivation.</p>
+        </div>
+      </section>
+
       <section class="content-container">
         <div class="left-column">
-          <h2>Goals</h2>
-          <p>Set and track your financial goals to stay on top of your savings and spending habits.</p>
-
           <form action="https://webdevbasics.net/scripts/demo.php" method="post" class="goal-form">
-            <h3>Set Your Financial Goal</h3>
+			<h3>Set Your Financial Goal</h3>
 
-            <label for="goalName">Goal Name:</label>
-            <input type="text" id="goalName" name="goalName" placeholder="e.g., Save for vacation" required>
+  <!-- Row 1: Goal Name + Target Amount -->
+			<div class="form-row">
+			  <div class="form-field">
+				<label for="goalName">Goal Name</label>
+				<input type="text" id="goalName" name="goalName" placeholder="e.g., Save for vacation" required>
+			  </div>
+			  <div class="form-field">
+				<label for="targetAmount">Target Amount ($)</label>
+				<input type="number" id="targetAmount" name="targetAmount" min="0" step="0.01" placeholder="Enter target amount" required>
+			  </div>
+			</div>
 
-            <label for="targetAmount">Target Amount ($):</label>
-            <input type="number" id="targetAmount" name="targetAmount" min="0" step="0.01" placeholder="Enter target amount" required>
+  <!-- Row 2: Current Amount + Target Date -->
+			<div class="form-row">
+			  <div class="form-field">
+				<label for="currentAmount">Current Amount ($)</label>
+				<input type="number" id="currentAmount" name="currentAmount" min="0" step="0.01" placeholder="Enter current amount">
+			  </div>
+			  <div class="form-field">
+				<label for="targetDate">Target Date</label>
+				<input type="date" id="targetDate" name="targetDate" required>
+			  </div>
+			</div>
 
-            <label for="currentAmount">Current Amount ($):</label>
-            <input type="number" id="currentAmount" name="currentAmount" min="0" step="0.01" placeholder="Enter current amount">
+  <!-- Row 3: Goal Category + Priority Checkbox -->
+			<div class="form-row">
+			  <div class="form-field">
+				<label for="category">Goal Category</label>
+				<select id="category" name="category">
+				  <option value="">-- Select Category --</option>
+				  <option value="savings">Savings</option>
+				  <option value="debt">Debt</option>
+				  <option value="investment">Investment</option>
+				  <option value="other">Other</option>
+				</select>
+			  </div>
+			  <div class="form-field form-field-inline">
+				<label for="priority">Set as Priority Goal</label>
+				<div class="checkbox-wrap">
+				  <input type="checkbox" id="priority" name="priority">
+				</div>
+			  </div>
+			</div>
 
-            <label for="targetDate">Target Date:</label>
-            <input type="date" id="targetDate" name="targetDate" required>
+  <!-- Notes spans full width -->
+			<div class="form-row full">
+			  <div class="form-field">
+				<label for="notes">Description / Notes</label>
+				<textarea id="notes" name="notes" rows="4" placeholder="Add any details about your goal..."></textarea>
+			  </div>
+			</div>
 
-            <label for="category">Goal Category:</label>
-            <select id="category" name="category">
-              <option value="">-- Select Category --</option>
-              <option value="savings">Savings</option>
-              <option value="debt">Debt</option>
-              <option value="investment">Investment</option>
-              <option value="other">Other</option>
-            </select>
-
-            <label for="notes">Description / Notes:</label>
-            <textarea id="notes" name="notes" rows="4" placeholder="Add any details about your goal..."></textarea>
-
-            <div class="checkbox-group">
-              <input type="checkbox" id="priority" name="priority">
-              <label for="priority" class="checkbox-label">Set as Priority Goal</label>
-            </div>
-
-            <button type="submit" class="submit-btn">Save Goal</button>
-          </form>
+  <!-- Save button at bottom -->
+			<button type="submit" class="submit-btn">Save Goal</button>
+		  </form>
         </div>
 
         <div class="right-column">
           <img src="images/goals.png" alt="Goals Visualization" class="calendar-image">
-
           <div class="calendar-info-boxes">
             <div class="calendar-box" id="add-goals" role="button" aria-label="Add Goals">
               <h3>Add Goals</h3>
@@ -91,17 +261,9 @@
   </div>
   
   <script>
-    document.getElementById('nav-select').addEventListener('change', (e) => {
-      const page = e.target.value;
-      if (page) {
-        window.location.href = page;
-      }
-    });
-	
-	const goalForm = document.querySelector('.goal-form');
+    const goalForm = document.querySelector('.goal-form');
     goalForm.addEventListener('submit', function(e) {
       e.preventDefault();
-
       const goal = {
         name: document.getElementById('goalName').value,
         target: parseFloat(document.getElementById('targetAmount').value),
@@ -111,15 +273,12 @@
         notes: document.getElementById('notes').value,
         priority: document.getElementById('priority').checked
       };
-
       let goals = JSON.parse(localStorage.getItem('goals')) || [];
       goals.push(goal);
       localStorage.setItem('goals', JSON.stringify(goals));
-
       alert('Goal saved!');
       goalForm.reset();
     });
   </script>
-  
 </body>
 </html>

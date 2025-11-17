@@ -1,10 +1,157 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dashboard - Save Path</title>
-  <link rel="stylesheet" href="css/project.css">
+  <link rel="stylesheet" href="css/project.css"/>
+  <style>
+    .hero-banner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: url('images/DashboardBack.png') no-repeat center center;
+      color: var(--text-light);
+      padding: 40px;
+      margin: 0;
+	  text-align: center;
+    }
+
+	.hero-image {
+	  margin-left: 30px;
+	}
+
+    .hero-image img {
+      max-width: 280px;
+      border-radius: 10px;
+    }
+
+    .hero-text {
+      flex: 1;
+	  padding: 30px 20px;
+	  margin: 0 auto;
+    }
+
+    .hero-text h2 {
+      font-size: 2.6rem;
+      color: #ffffff;
+      margin-bottom: 10px;
+    }
+
+    .hero-text p {
+      font-size: 1.3rem;
+      line-height: 1.4;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      padding: 0 40px 40px;
+    }
+
+    .left-column,
+    .right-column {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .upcoming-payments,
+    .goal-progress {
+      background-color: #1c2b3f;
+      padding: 20px;
+      border-radius: 12px;
+      color: var(--text-light);
+    }
+
+    .upcoming-payments h2,
+    .goal-progress h2 {
+      margin-top: 0;
+      color: var(--accent);
+    }
+
+    #payment-list {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    #payment-list li {
+      margin-bottom: 8px;
+    }
+
+    #goal-bar {
+      width: 100%;
+      height: 12px;
+      border-radius: 6px;
+      overflow: hidden;
+      background-color: #e5e7eb;
+    }
+
+    #goal-bar::-webkit-progress-value {
+      background: var(--accent);
+      border-radius: 12px;
+    }
+
+    #goal-bar::-webkit-progress-bar {
+      background-color: #f3f4f6;
+    }
+
+    #goal-label {
+      font-weight: bold;
+      color: var(--text-light);
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    #goal-percent {
+      font-style: italic;
+      color: var(--cta);
+      margin-top: 8px;
+    }
+
+    .dashboard-info-boxes {
+      display: flex;
+	  justify-content: center;
+      gap: 20px;
+    }
+
+    .dashboard-box {
+      background-color: #2e2e3e;
+      color: #ffffff;
+      padding: 8px 0;
+      border-radius: 20px;
+      text-align: center;
+      text-decoration: none;
+      font-weight: bold;
+	  font-size: 1.2rem;
+	  width: 800px;
+      transition: transform 0.2s, background-color 0.2s;
+    }
+
+    .dashboard-box:hover {
+      transform: translateY(-5px);
+      background-color: var(--accent);
+    }
+
+    footer {
+      background-color: var(--secondary);
+      color: var(--text-dark);
+      text-align: center;
+      padding: 15px;
+      width: 100%;
+    }
+
+    @media (max-width: 720px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .dashboard-info-boxes {
+        flex-direction: column;
+      }
+    }
+  </style>
 </head>
 <body>
   <div id="wrapper">
@@ -12,52 +159,48 @@
       <h1 class="site-title">Save Path</h1>
       <nav class="top-nav">
         <a href="index.html" class="home-link">Home</a>
+        <a href="dashboard.html" class="nav-link">Dashboard</a>
+        <a href="visuals.html" class="nav-link">Visuals</a>
+        <a href="goals.html" class="nav-link">Goals</a>
+        <a href="calendar.html" class="nav-link">Calendar</a>
+		<a href="quickadd.html" class="quick-add-btn">+ Quick Add</a>
 
-        <div class="controls">
-          <label for="nav-select">Explore:</label>
-          <select id="nav-select">
-            <option value=""> </option>
-            <option value="dashboard.html">Dashboard</option>
-            <option value="visuals.html">Visuals</option>
-            <option value="goals.html">Goals</option>
-            <option value="calendar.html">Calendar</option>
-          </select>
-        </div>
-
-        <a href="quickadd.html" class="quick-add-btn">+ Quick Add</a>
       </nav>
     </header>
 
     <main>
-      <section class="welcome-message">
-        <h2 id="welcome-text"></h2>
+      <section class="hero-banner">
+        <div class="hero-text">
+          <h2>Welcome to Your Dashboard</h2>
+          <p>Track your finances, goals, and upcoming payments all in one place.</p>
+		  
+		  <div class="dashboard-info-boxes">
+            <a href="recent.html" class="dashboard-box">
+              <h3>Recent</h3>
+            </a>
+            <a href="summary.html" class="dashboard-box">
+              <h3>Summary</h3>
+            </a>
+          </div>
+        </div>
       </section>
 
-      <section class="upcoming-payments">
-        <h2>Upcoming Payments</h2>
-        <ul id="payment-list"></ul>
-      </section>
+      <section class="dashboard-grid">
+        <div class="left-column">
+		  <h2 class="upcoming-title">Upcoming Payments</h2>
+          <section class="upcoming-payments">
+            <ul id="payment-list"></ul>
+          </section>
+        </div>
 
-      <section class="goal-progress">
-        <h2>Goal Progress</h2>
-        <label id="goal-label"></label>
-        <progress id="goal-bar" value="0" max="100"></progress>
-        <p id="goal-percent"></p>
-      </section>
-
-      <section class="dashboard-info-boxes">
-        <a href="recent.html" class="dashboard-box">
-          <h3>Recent</h3>
-          <p>View your most recent transactions.</p>
-        </a>
-        <a href="summary.html" class="dashboard-box">
-          <h3>Summary</h3>
-          <p>Quick overview of your finances.</p>
-        </a>
-        <a href="quickadd.html" class="dashboard-box">
-          <h3>Quick Add</h3>
-          <p>Add a new income or expense quickly.</p>
-        </a>
+        <div class="right-column">
+		  <h2 class="goal-progress-title">Goal Progress</h2>
+          <section class="goal-progress">
+            <label id="goal-label"></label>
+            <progress id="goal-bar" value="0" max="100"></progress>
+            <p id="goal-percent"></p>
+          </section>
+        </div>
       </section>
     </main>
 
@@ -67,11 +210,6 @@
   </div>
   
   <script>
-    document.getElementById('nav-select').addEventListener('change', (e) => {
-      const page = e.target.value;
-      if (page) window.location.href = page;
-    });
-
     function showWelcomeMessage() {
       const now = new Date();
       const month = now.toLocaleString('default', { month: 'long' });
@@ -79,16 +217,13 @@
       document.getElementById('welcome-text').textContent =
         `Welcome back! Here’s your financial snapshot for ${month} ${year}`;
     }
-
     function showUpcomingPayments() {
       const transactions = JSON.parse(localStorage.getItem('transactions')) || [];
       const today = new Date();
       const tomorrow = new Date();
       tomorrow.setDate(today.getDate() + 1);
-
       const paymentList = document.getElementById('payment-list');
       paymentList.innerHTML = '';
-
       transactions.forEach(tx => {
         const txDate = new Date(tx.date);
         if (
@@ -100,36 +235,29 @@
           paymentList.appendChild(li);
         }
       });
-
       if (!paymentList.hasChildNodes()) {
         paymentList.innerHTML = '<li>No payments today or tomorrow.</li>';
       }
     }
-
     function updateGoalProgress() {
       const goals = JSON.parse(localStorage.getItem('goals')) || [];
       if (goals.length > 0) {
         const goal = goals[0];
         const current = goal.saved || 0;
         const target = goal.target || 1;
-
         const bar = document.getElementById('goal-bar');
         const percent = document.getElementById('goal-percent');
         const label = document.getElementById('goal-label');
-
         bar.value = current;
         bar.max = target;
         const pct = Math.round((current / target) * 100);
-
         label.textContent = `${goal.name}: $${current} / $${target}`;
-        percent.textContent = `${pct}% complete`;
+        percent.textContent = `You’re ${pct}% of the way there — keep going! 🎉`;
       } else {
         document.getElementById('goal-label').textContent = 'No goals set yet.';
         document.getElementById('goal-percent').textContent = '';
       }
     }
-
-    showWelcomeMessage();
     showUpcomingPayments();
     updateGoalProgress();
   </script>
