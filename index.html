@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Budget Calendar - Home</title>
-  <link rel="stylesheet" href="css/project.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Save Path - Home</title>
+  <link rel="stylesheet" href="css/project.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
 </head>
-<body>
+<body class="dark-theme">
   <div id="wrapper">
     <header>
       <h1 class="site-title">Save Path</h1>
@@ -17,6 +18,7 @@
         <a href="goals.html" class="nav-link">Goals</a>
         <a href="calendar.html" class="nav-link">Calendar</a>
         <a href="quickadd.html" class="quick-add-btn">+ Quick Add</a>
+        <a href="product.html" class="nav-link">Prodcut</a>
       </nav>
     </header>
 
@@ -24,45 +26,46 @@
       <section class="content-container">
         <div class="left-column">
           <div class="text-content">
-            <h2>Welcome to Budget Calendar</h2>
-            <p>This website helps you track income and expenses, visualize spending habits, and stay on top of your financial goals through an easy-to-use calendar interface.</p>
+            <h2 class="neon-heading">Welcome to Your Finance Command Center</h2>
+            <p class="intro-text">
+              Track your income, visualize spending, and dominate your financial goals — all in one sleek interface.
+            </p>
           </div>
 
-          <table class="feature-table">
-            <tr>
-              <th>Set Your Goals</th>
-              <td>Plan your savings, set spending limits, and track your progress to achieve your financial goals faster.</td>
-            </tr>
-            <tr>
-              <th>Interactive Calendar</th>
-              <td>Keep track of income and expenses with a clear calendar view that makes managing finances simple and visual.</td>
-            </tr>
-            <tr>
-              <th>Easy Budgeting</th>
-              <td>Visual summaries help you understand where your money goes and make smarter budgeting decisions.</td>
-            </tr>
-          </table>
+          <div class="feature-grid">
+            <div class="feature-card">
+              <h3>🎯 Set Your Goals</h3>
+              <p>Define savings targets, spending limits, and monitor your progress with glowing precision.</p>
+            </div>
+            <div class="feature-card">
+              <h3>📅 Interactive Calendar</h3>
+              <p>Visualize your financial timeline with a neon-lit calendar that makes budgeting intuitive.</p>
+            </div>
+            <div class="feature-card">
+              <h3>📊 Smart Budgeting</h3>
+              <p>Get AI-powered insights and visual summaries to make smarter money moves.</p>
+            </div>
+          </div>
         </div>
 
         <div class="right-column">
-          <img src="images/homepage.png" alt="Budget visualization">
+          <img src="images/homepage-dark.png" alt="Dashboard preview" class="dashboard-preview" />
         </div>
       </section>
     </main>
 
-    <footer>
-      <p>&copy; 2025 Budget Calendar | All Rights Reserved<br>Contact us: 777-888-9999</p>
+    <footer class="footer-dark">
+      <p>&copy; 2025 Save Path | All Rights Reserved<br />Contact us: 777-888-9999</p>
     </footer>
   </div>
-  
+
   <script>
-    document.getElementById('nav-select').addEventListener('change', (e) => {
+    document.getElementById('nav-select')?.addEventListener('change', (e) => {
       const page = e.target.value;
       if (page) {
         window.location.href = page;
       }
     });
   </script>
-  
 </body>
 </html>
