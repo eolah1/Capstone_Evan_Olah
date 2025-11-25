@@ -6,6 +6,139 @@
   <title>Quick Add - Save Path</title>
   <link rel="stylesheet" href="css/project.css">
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    body.quickadd-bg {
+      background: linear-gradient(180deg, var(--secondary), var(--primary));
+      min-height: 100vh;
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      color: var(--text-light);
+    }
+
+    main {
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .quickadd-choice {
+      display: flex;
+      gap: 30px;
+      margin-bottom: 40px;
+      justify-content: center;
+    }
+
+    .dashboard-box {
+      background-color: #1c2b3f;
+      padding: 30px;
+      border-radius: 12px;
+      text-align: center;
+      cursor: pointer;
+      flex: 1;
+      max-width: 300px;
+      transition: transform 0.2s, background-color 0.2s;
+    }
+
+    .dashboard-box:hover {
+      transform: translateY(-5px);
+      background-color: var(--accent);
+    }
+
+    .quickadd-container {
+      position: relative;
+      width: 100%;
+      max-width: 500px;
+      min-height: 500px; /* ensures space for cards */
+    }
+
+    .quickadd-card {
+      background-color: #142030;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      transform: translateY(20px);
+      pointer-events: none;
+      transition: all 0.3s ease;
+    }
+
+    .quickadd-card.active {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .quickadd-card h2 {
+      color: var(--accent);
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    form label {
+      display: block;
+      margin-top: 15px;
+      font-weight: 600;
+    }
+
+    form input, form select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #3a4457;
+      background-color: #101a2e;
+      color: var(--text-light);
+      font-size: 1rem;
+      margin-top: 6px;
+    }
+
+    form input:focus, form select:focus {
+      border-color: var(--accent);
+      outline: none;
+      box-shadow: 0 0 6px var(--accent);
+    }
+
+    form button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      background: var(--cta);
+      color: var(--white);
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.2s, transform 0.2s;
+    }
+
+    form button:hover {
+      background-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .back-btn {
+      margin-top: 15px;
+      background: none;
+      border: none;
+      color: var(--accent);
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    footer {
+      background-color: var(--secondary);
+      color: var(--text-dark);
+      text-align: center;
+      padding: 15px;
+      margin-top: auto;
+      width: 100%;
+    }
+  </style>
 </head>
 <body class="quickadd-bg">
   <div id="wrapper">
@@ -17,12 +150,13 @@
         <a href="visuals.html" class="nav-link">Visuals</a>
         <a href="goals.html" class="nav-link">Goals</a>
         <a href="calendar.html" class="nav-link">Calendar</a>
-		<a href="product.html" class="nav-link">Prodcut</a>
+        <a href="product.html" class="nav-link">Product</a>
         <a href="quickadd.html" class="quick-add-btn">+ Quick Add</a>
       </nav>
     </header>
 
     <main>
+      <!-- Choice Section -->
       <section id="quickadd-choice" class="quickadd-choice">
         <div id="choose-expense" class="dashboard-box">
           <h3>Add Expense/Income</h3>
@@ -34,107 +168,111 @@
         </div>
       </section>
 
-      <div class="quickadd-card" id="expense-card" style="display:none;">
-        <h2>Add New Expense/Income</h2>
-        <form id="expense-form">
-          <label for="desc">Description:</label>
-          <input type="text" id="desc" required>
-          <label for="amount">Amount:</label>
-          <input type="number" id="amount" required>
-          <label for="type">Type:</label>
-          <select id="type">
-            <option value="expense">Expense</option>
-            <option value="income">Income</option>
-          </select>
-          <label for="date">Date:</label>
-          <input type="date" id="date" required>
-          <button type="submit">Add</button>
-        </form>
-        <button class="back-btn" onclick="goBack()">← Back to Options</button>
-      </div>
+      <!-- Container for cards -->
+      <div class="quickadd-container">
+        <!-- Expense Card -->
+        <div class="quickadd-card" id="expense-card">
+          <h2>Add New Expense/Income</h2>
+          <form id="expense-form">
+            <label for="desc">Description:</label>
+            <input type="text" id="desc" required>
+            <label for="amount">Amount:</label>
+            <input type="number" id="amount" required>
+            <label for="type">Type:</label>
+            <select id="type">
+              <option value="expense">Expense</option>
+              <option value="income">Income</option>
+            </select>
+            <label for="date">Date:</label>
+            <input type="date" id="date" required>
+            <button type="submit">Add</button>
+          </form>
+          <button class="back-btn" onclick="goBack()">← Back to Options</button>
+        </div>
 
-      <div class="quickadd-card" id="recurring-card" style="display:none;">
-        <h2>Add Recurring Payment</h2>
-        <form id="recurring-form">
-          <label for="rdesc">Description:</label>
-          <input type="text" id="rdesc" required>
-          <label for="ramount">Amount:</label>
-          <input type="number" id="ramount" required>
-          <label for="frequency">Frequency:</label>
-          <select id="frequency" required>
-            <option value="">-- Select Frequency --</option>
-            <option value="weekly">Weekly</option>
-            <option value="monthly">Monthly</option>
-          </select>
-          <label for="startDate">Start Date:</label>
-          <input type="date" id="startDate" required>
-          <label for="endDate">End Date (optional):</label>
-          <input type="date" id="endDate">
-          <button type="submit">Add Recurring Payment</button>
-        </form>
-        <button class="back-btn" onclick="goBack()">← Back to Options</button>
+        <!-- Recurring Card -->
+        <div class="quickadd-card" id="recurring-card">
+          <h2>Add Recurring Payment</h2>
+          <form id="recurring-form">
+            <label for="rdesc">Description:</label>
+            <input type="text" id="rdesc" required>
+            <label for="ramount">Amount:</label>
+            <input type="number" id="ramount" required>
+            <label for="frequency">Frequency:</label>
+            <select id="frequency" required>
+              <option value="">-- Select Frequency --</option>
+              <option value="weekly">Weekly</option>
+              <option value="monthly">Monthly</option>
+            </select>
+            <label for="startDate">Start Date:</label>
+            <input type="date" id="startDate" required>
+            <label for="endDate">End Date (optional):</label>
+            <input type="date" id="endDate">
+            <button type="submit">Add Recurring Payment</button>
+          </form>
+          <button class="back-btn" onclick="goBack()">← Back to Options</button>
+        </div>
       </div>
     </main>
 
     <footer>
-      <p>&copy; 2025 Budget Calendar | All Rights Reserved<br>Contact us: 777-888-9999</p>
+      <p>&copy; 2025 SavePath | All Rights Reserved<br>Contact us: 777-888-9999</p>
     </footer>
   </div>
 
   <script>
-    document.getElementById('nav-select').addEventListener('change', (e) => {
-      const page = e.target.value;
-      if (page) window.location.href = page;
-    });
+  const choiceSection = document.getElementById('quickadd-choice');
+  const expenseCard = document.getElementById('expense-card');
+  const recurringCard = document.getElementById('recurring-card');
 
-    document.getElementById('choose-expense').addEventListener('click', () => {
-      document.getElementById('quickadd-choice').style.display = 'none';
-      document.getElementById('expense-card').style.display = 'block';
-    });
+  document.getElementById('choose-expense').addEventListener('click', () => {
+    choiceSection.style.display = 'none';
+    expenseCard.classList.add('active');
+  });
 
-    document.getElementById('choose-recurring').addEventListener('click', () => {
-      document.getElementById('quickadd-choice').style.display = 'none';
-      document.getElementById('recurring-card').style.display = 'block';
-    });
+  document.getElementById('choose-recurring').addEventListener('click', () => {
+    choiceSection.style.display = 'none';
+    recurringCard.classList.add('active');
+  });
 
-    function goBack() {
-      document.getElementById('expense-card').style.display = 'none';
-      document.getElementById('recurring-card').style.display = 'none';
-      document.getElementById('quickadd-choice').style.display = 'flex';
-    }
+  function goBack() {
+    expenseCard.classList.remove('active');
+    recurringCard.classList.remove('active');
+    choiceSection.style.display = 'flex';
+  }
 
-    document.getElementById('expense-form').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const transaction = {
-        desc: document.getElementById('desc').value,
-        amount: parseFloat(document.getElementById('amount').value),
-        type: document.getElementById('type').value,
-        date: document.getElementById('date').value,
-        recurring: false
-      };
-      let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
-      transactions.push(transaction);
-      localStorage.setItem('transactions', JSON.stringify(transactions));
-      alert('Transaction added!');
-      this.reset();
-    });
+  document.getElementById('expense-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const transaction = {
+      desc: document.getElementById('desc').value,
+      amount: parseFloat(document.getElementById('amount').value),
+      type: document.getElementById('type').value,
+      date: document.getElementById('date').value,
+      recurring: false
+    };
+    let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+    transactions.push(transaction);
+    localStorage.setItem('transactions', JSON.stringify(transactions));
+    alert('Transaction added!');
+    this.reset();
+  });
 
-    document.getElementById('recurring-form').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const recurring = {
-        desc: document.getElementById('rdesc').value,
-        amount: parseFloat(document.getElementById('ramount').value),
-        frequency: document.getElementById('frequency').value,
-        startDate: document.getElementById('startDate').value,
-        endDate: document.getElementById('endDate').value || null,
-        recurring: true
-      };
-      let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
-      transactions.push(recurring);
-      localStorage.setItem('transactions', JSON.stringify(transactions));
-      alert('Recurring payment added!');
-      this.reset();
-    });
-  </script>
+  document.getElementById('recurring-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const recurring = {
+      desc: document.getElementById('rdesc').value,
+      amount: parseFloat(document.getElementById('ramount').value),
+      frequency: document.getElementById('frequency').value,
+      startDate: document.getElementById('startDate').value,
+      endDate: document.getElementById('endDate').value || null,
+      recurring: true
+    };
+    let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+    transactions.push(recurring);
+    localStorage.setItem('transactions', JSON.stringify(transactions));
+    alert('Recurring payment added!');
+    this.reset();
+  });
+</script>
 </body>
 </html>

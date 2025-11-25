@@ -7,13 +7,13 @@
   <link rel="stylesheet" href="css/project.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
-	body {
-	  background-image: url('images/goalsBackground.png');
-	  background-size: cover;
-	  background-position: right center;
-	  background-repeat: no-repeat;
-	  background-color: #0c1624;
-	}
+    body {
+      background-image: url('images/goalsBackground.png');
+      background-size: cover;
+      background-position: right center;
+      background-repeat: no-repeat;
+      background-color: #0c1624;
+    }
   
     .hero-banner {
       background: linear-gradient(90deg, var(--secondary), var(--primary));
@@ -92,6 +92,13 @@
       border-color: var(--accent);
       outline: none;
       box-shadow: 0 0 6px var(--accent);
+    }
+
+    .error-message {
+      color: red;
+      font-size: 0.9rem;
+      margin-top: 4px;
+      display: none;
     }
 
     .checkbox-wrap {
@@ -176,7 +183,7 @@
         <a href="visuals.html" class="nav-link">Visuals</a>
         <a href="goals.html" class="nav-link">Goals</a>
         <a href="calendar.html" class="nav-link">Calendar</a>
-		<a href="product.html" class="nav-link">Prodcut</a>
+        <a href="product.html" class="nav-link">Product</a>
         <a href="quickadd.html" class="quick-add-btn">+ Quick Add</a>
       </nav>
     </header>
@@ -192,67 +199,63 @@
       <section class="content-container">
         <div class="left-column">
           <form action="https://webdevbasics.net/scripts/demo.php" method="post" class="goal-form">
-			<h3>Set Your Financial Goal</h3>
+            <h3>Set Your Financial Goal</h3>
 
-  <!-- Row 1: Goal Name + Target Amount -->
-			<div class="form-row">
-			  <div class="form-field">
-				<label for="goalName">Goal Name</label>
-				<input type="text" id="goalName" name="goalName" placeholder="e.g., Save for vacation" required>
-			  </div>
-			  <div class="form-field">
-				<label for="targetAmount">Target Amount ($)</label>
-				<input type="number" id="targetAmount" name="targetAmount" min="0" step="0.01" placeholder="Enter target amount" required>
-			  </div>
-			</div>
+            <div class="form-row">
+              <div class="form-field">
+                <label for="goalName">Goal Name</label>
+                <input type="text" id="goalName" name="goalName" placeholder="e.g., Save for vacation" required>
+              </div>
+              <div class="form-field">
+                <label for="targetAmount">Target Amount ($)</label>
+                <input type="text" id="targetAmount" name="targetAmount" placeholder="Enter target amount" required>
+                <span class="error-message" id="targetAmountError"></span>
+              </div>
+            </div>
 
-  <!-- Row 2: Current Amount + Target Date -->
-			<div class="form-row">
-			  <div class="form-field">
-				<label for="currentAmount">Current Amount ($)</label>
-				<input type="number" id="currentAmount" name="currentAmount" min="0" step="0.01" placeholder="Enter current amount">
-			  </div>
-			  <div class="form-field">
-				<label for="targetDate">Target Date</label>
-				<input type="date" id="targetDate" name="targetDate" required>
-			  </div>
-			</div>
+            <div class="form-row">
+              <div class="form-field">
+                <label for="currentAmount">Current Amount ($)</label>
+                <input type="text" id="currentAmount" name="currentAmount" placeholder="Enter current amount">
+                <span class="error-message" id="currentAmountError"></span>
+              </div>
+              <div class="form-field">
+                <label for="targetDate">Target Date</label>
+                <input type="date" id="targetDate" name="targetDate" required>
+              </div>
+            </div>
 
-  <!-- Row 3: Goal Category + Priority Checkbox -->
-			<div class="form-row">
-			  <div class="form-field">
-				<label for="category">Goal Category</label>
-				<select id="category" name="category">
-				  <option value="">-- Select Category --</option>
-				  <option value="savings">Savings</option>
-				  <option value="debt">Debt</option>
-				  <option value="investment">Investment</option>
-				  <option value="other">Other</option>
-				</select>
-			  </div>
-			  <div class="form-field form-field-inline">
-				<label for="priority">Set as Priority Goal</label>
-				<div class="checkbox-wrap">
-				  <input type="checkbox" id="priority" name="priority">
-				</div>
-			  </div>
-			</div>
+            <div class="form-row">
+              <div class="form-field">
+                <label for="category">Goal Category</label>
+                <select id="category" name="category">
+                  <option value="">-- Select Category --</option>
+                  <option value="savings">Savings</option>
+                  <option value="debt">Debt</option>
+                  <option value="investment">Investment</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              <div class="form-field form-field-inline">
+                <label for="priority">Set as Priority Goal</label>
+                <div class="checkbox-wrap">
+                  <input type="checkbox" id="priority" name="priority">
+                </div>
+              </div>
+            </div>
 
-  <!-- Notes spans full width -->
-			<div class="form-row full">
-			  <div class="form-field">
-				<label for="notes">Description / Notes</label>
-				<textarea id="notes" name="notes" rows="4" placeholder="Add any details about your goal..."></textarea>
-			  </div>
-			</div>
+            <div class="form-row full">
+              <div class="form-field">
+                <label for="notes">Description / Notes</label>
+                <textarea id="notes" name="notes" rows="4" placeholder="Add any details about your goal..."></textarea>
+              </div>
+            </div>
 
-  <!-- Save button at bottom -->
-			<button type="submit" class="submit-btn">Save Goal</button>
-		  </form>
+            <button type="submit" class="submit-btn">Save Goal</button>
+          </form>
         </div>
 
         <div class="right-column">
-          <img src="images/goals.png" alt="Goals Visualization" class="calendar-image">
           <div class="calendar-info-boxes">
             <div class="calendar-box" id="add-goals" role="button" aria-label="Add Goals">
               <h3>Add Goals</h3>
@@ -271,23 +274,37 @@
   </div>
   
   <script>
+    const targetAmountInput = document.getElementById('targetAmount');
+   const currentAmountInput = document.getElementById('currentAmount');
+    const targetAmountError = document.getElementById('targetAmountError');
+    const currentAmountError = document.getElementById('currentAmountError');
+
+    function validateNumber(input, errorElement) {
+      if (input.value.trim() !== "" && isNaN(input.value)) {
+        errorElement.textContent = "Must be a digit";
+        errorElement.style.display = "block";
+      } else {
+        errorElement.textContent = "";
+        errorElement.style.display = "none";
+      }
+    }
+
+    targetAmountInput.addEventListener('input', () => {
+      validateNumber(targetAmountInput, targetAmountError);
+    });
+
+    currentAmountInput.addEventListener('input', () => {
+      validateNumber(currentAmountInput, currentAmountError);
+    });
+
     const goalForm = document.querySelector('.goal-form');
     goalForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const goal = {
-        name: document.getElementById('goalName').value,
-        target: parseFloat(document.getElementById('targetAmount').value),
-        saved: parseFloat(document.getElementById('currentAmount').value) || 0,
-        targetDate: document.getElementById('targetDate').value,
-        category: document.getElementById('category').value,
-        notes: document.getElementById('notes').value,
-        priority: document.getElementById('priority').checked
-      };
-      let goals = JSON.parse(localStorage.getItem('goals')) || [];
-      goals.push(goal);
-      localStorage.setItem('goals', JSON.stringify(goals));
-      alert('Goal saved!');
-      goalForm.reset();
+      validateNumber(targetAmountInput, targetAmountError);
+      validateNumber(currentAmountInput, currentAmountError);
+
+      if (targetAmountError.textContent || currentAmountError.textContent) {
+        e.preventDefault();
+      }
     });
   </script>
 </body>
