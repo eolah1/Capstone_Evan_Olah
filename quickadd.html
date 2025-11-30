@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     body.quickadd-bg {
-      background: linear-gradient(180deg, var(--secondary), var(--primary));
+      background: url('images/Spacebackground.png') no-repeat center center fixed;
       min-height: 100vh;
       margin: 0;
       font-family: 'Inter', sans-serif;
@@ -23,34 +23,69 @@
       align-items: center;
     }
 
+    .quickadd-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 3.5rem;
+      color: var(--accent);
+      text-shadow: 0 0 8px var(--accent);
+      margin-bottom: 50px;
+	  margin-top: 30px;
+      text-align: center;
+    }
+
     .quickadd-choice {
       display: flex;
-      gap: 30px;
-      margin-bottom: 40px;
+      gap: 40px;
       justify-content: center;
+      margin-bottom: 40px;
     }
 
     .dashboard-box {
-      background-color: #1c2b3f;
+      background-color: #0c1624;
       padding: 30px;
-      border-radius: 12px;
+      border-radius: 16px;
       text-align: center;
       cursor: pointer;
-      flex: 1;
-      max-width: 300px;
-      transition: transform 0.2s, background-color 0.2s;
+      max-width: 280px;
+      transition: transform 0.3s, box-shadow 0.3s;
+	  border: 2px solid #a020f0;
+      box-shadow:
+        0 0 0 6px #0c1624,     /* creates a gap using background color */
+        0 0 8px #2979ff,      /* soft blue glow */
+        0 0 20px #a020f0,      /* extended purple glow */
+        0 0 30px #2979ff;
     }
 
     .dashboard-box:hover {
-      transform: translateY(-5px);
-      background-color: var(--accent);
+      transform: scale(1.05);
+      box-shadow: 0 0 20px var(--accent);
+    }
+
+    .dashboard-box h3 {
+      font-family: 'Orbitron', sans-serif;
+      color: var(--accent);
+      font-size: 1.4em;
+      margin-bottom: 10px;
+      text-shadow: 0 0 6px var(--accent);
+    }
+
+    .dashboard-box p {
+      font-size: 0.95em;
+      color: var(--text-light);
+    }
+
+    .quickadd-icon {
+      width: clamp(60px, 10vw, 120px);  
+	  height: auto;  
+      margin-bottom: 15px;
+      filter: drop-shadow(0 0 6px var(--accent));
     }
 
     .quickadd-container {
       position: relative;
       width: 100%;
       max-width: 500px;
-      min-height: 500px; /* ensures space for cards */
+      min-height: 500px;
     }
 
     .quickadd-card {
@@ -78,6 +113,8 @@
       color: var(--accent);
       margin-bottom: 20px;
       text-align: center;
+      font-family: 'Orbitron', sans-serif;
+      text-shadow: 0 0 6px var(--accent);
     }
 
     form label {
@@ -107,8 +144,8 @@
       margin-top: 20px;
       width: 100%;
       padding: 12px;
-      background: var(--cta);
-      color: var(--white);
+      background: linear-gradient(135deg, var(--cta), var(--accent));
+      color: var(--secondary);
       border: none;
       border-radius: 8px;
       font-size: 1rem;
@@ -118,8 +155,8 @@
     }
 
     form button:hover {
-      background-color: var(--accent);
-      transform: translateY(-2px);
+      transform: scale(1.05);
+      box-shadow: 0 0 10px var(--accent);
     }
 
     .back-btn {
@@ -140,7 +177,6 @@
       width: 100%;
     }
   </style>
-</head>
 <body class="quickadd-bg">
   <div id="wrapper">
     <header>
@@ -158,12 +194,15 @@
 
     <main>
       <!-- Choice Section -->
+	  <h1 class="quickadd-title">Quick Add</h1>
       <section id="quickadd-choice" class="quickadd-choice">
         <div id="choose-expense" class="dashboard-box">
+		  <img src="images/recurring.png" alt="Expense Icon" style="width:60px; margin-bottom:10px;">
           <h3>Add Expense/Income</h3>
           <p>Log a one-time transaction.</p>
         </div>
         <div id="choose-recurring" class="dashboard-box">
+		  <img src="images/incomeExpense.png" alt="Expense Icon" style="width:60px; margin-bottom:10px;">
           <h3>Add Recurring Payment</h3>
           <p>Set up a weekly or monthly bill.</p>
         </div>

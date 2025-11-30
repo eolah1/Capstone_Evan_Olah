@@ -1,165 +1,395 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Plan ahead with SavePath Calendar. Organize bills, recurring payments, and financial events in a clear timeline.">
-  <title>Calendar - Budget Calendar</title>
-  <link rel="stylesheet" href="css/project.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Plan ahead with SavePath Calendar. Organize bills, recurring payments, and financial events in a clear timeline." />
+  <title>Calendar - SavePath</title>
+  <link rel="stylesheet" href="css/project.css" />
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    body.calendar-bg {
+      background: url('images/space-bg.png') no-repeat center center fixed;
+      background-size: cover;
+      color: #ffffff;
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+    }
+    body.calendar-bg::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: #0c1624;
+      z-index: -1;
+    }
+
+    .calendar-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 3.5rem;
+      text-align: center;
+      color: #00f0ff;
+      text-shadow: 0 0 12px #00f0ff;
+      margin-top: 30px;
+      margin-bottom: 10px;
+    }
+    .calendar-subtitle {
+      font-size: 1.2rem;
+      text-align: center;
+      color: #ccc;
+      margin-bottom: 30px;
+    }
+
+    .calendar-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 0 20px 20px 20px;
+    }
+
+    .month-switcher {
+      display: flex;
+      gap: 10px;
+    }
+
+    .nav-button {
+      background-color: #0c1624;
+      border: 2px solid #00f0ff;
+      color: #00f0ff;
+      font-family: 'Orbitron', sans-serif;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 1rem;
+      text-shadow: 0 0 6px #00f0ff;
+      box-shadow: 0 0 12px #00f0ff;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .nav-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px #00f0ff;
+    }
+
+    .view-dropdown {
+      background-color: #0c1624;
+      border: 2px solid #00f0ff;
+      color: #00f0ff;
+      font-family: 'Orbitron', sans-serif;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      text-shadow: 0 0 6px #00f0ff;
+	  box-shadow: none;
+    }
+
+    #calendar {
+	  background-color: #0c1624;
+	  border: 2px solid #ffffff;
+      width: 100%;
+      max-width: none;
+      margin: 0;
+      background-color: rgba(12,22,36,0.8);
+      border-radius: 0;
+      padding: 20px;
+      box-shadow: none;
+    }
+	
+	.calendar-controls {
+	  display: flex;
+	  justify-content: space-between;
+	  align-items: center;
+	  padding-top: 30px;
+	}
+
+    .fc {
+      background: transparent;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .fc-scrollgrid,
+    .fc-col-header,
+    .fc-daygrid {
+      border: none !important;
+    }
+	
+	.fc .fc-daygrid-day,
+    .fc .fc-daygrid-day-frame,
+    .fc .fc-scrollgrid,
+    .fc .fc-scrollgrid-section,
+    .fc .fc-scrollgrid-sync-table,
+    .fc .fc-col-header-cell,
+    .fc .fc-daygrid-day-top {
+      border: none;
+	}
+	
+	.fc-day-today {
+      background-color: rgba(255, 255, 255, 0.08) !important;
+    }
+
+    .fc-col-header-cell {
+      background: transparent;
+      color: #00f0ff;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.1rem;
+      text-shadow: 0 0 8px #00f0ff;
+      border: none !important;
+      padding: 10px 0;
+    }
+
+    .fc-daygrid-day {
+      aspect-ratio: 2 / 1;   /* twice as wide as tall */
+      min-height: auto;
+      background-color: #0c1624;
+      border-radius: 12px;
+      margin: 3px;
+      box-shadow:
+        0 0 12px #00f0ff,
+        0 0 20px #a020f0;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .fc-daygrid-day:hover {
+      transform: scale(1.05);
+      box-shadow:
+        0 0 18px #00f0ff,
+        0 0 28px #a020f0;
+    }
+    .fc-daygrid-day.fc-day-today {
+      background-color: #142030;
+      box-shadow: 0 0 25px #00f0ff;
+      border-radius: 12px;
+    }
+
+    .fc-daygrid-day-number {
+      color: #fff;
+      font-weight: bold;
+    }
+
+    .fc-event {
+      background-color: #00f0ff;
+      border: none;
+      color: #0c1624;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.85em;
+      text-shadow: 0 0 6px #00f0ff;
+    }
+	
+	.fc-daygrid-day-frame,
+    .fc-daygrid-day-events {
+      overflow: visible !important;
+    }
+
+    .fc-event:hover {
+      transform: none; /* disable scaling to avoid cutoff */
+      box-shadow: 0 0 18px #00f0ff, 0 0 28px #a020f0;
+    }
+	
+	#back-month,
+    #forward-month,
+    #month-label {
+      background-color: #0c1624;
+      border: 2px solid #00f0ff; 
+      color: #00f0ff;
+      font-family: 'Orbitron', sans-serif;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      text-shadow: none;          
+      box-shadow: none;        
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.9em;
+      margin-top: 40px;
+      color: #ccc;
+    }
+  </style>
 </head>
-<body>
+<body class="calendar-bg">
   <div id="wrapper">
     <header>
-      <h1 class="site-title">Save Path</h1>
+      <h1 class="site-title">SavePath</h1>
       <nav class="top-nav">
         <a href="index.html" class="home-link">Home</a>
         <a href="dashboard.html" class="nav-link">Dashboard</a>
         <a href="visuals.html" class="nav-link">Visuals</a>
         <a href="goals.html" class="nav-link">Goals</a>
         <a href="calendar.html" class="nav-link">Calendar</a>
-		<a href="product.html" class="nav-link">Prodcut</a>
+        <a href="product.html" class="nav-link">Product</a>
         <a href="quickadd.html" class="quick-add-btn">+ Quick Add</a>
       </nav>
     </header>
 
     <main>
-      <section class="content-container">
-        <div class="left-column">
-          <h2>Calendar</h2>
-          <p>View and manage your transactions with flexible calendar options for daily, weekly, or monthly planning.</p>
-
-          <label for="month-selector">Jump to Month (applies to all views):</label>
-          <select id="month-selector" style="margin-bottom: 20px;"></select>
-
-          <div class="calendar-nav-buttons" style="margin-bottom: 20px;">
-            <button id="back-day">← Back 1 Day</button>
-            <button id="forward-day">→ Forward 1 Day</button>
-            <button id="back-week">← Back 1 Week</button>
-            <button id="forward-week">→ Forward 1 Week</button>
-          </div>
-
-          <div id="calendar" style="margin-top: 20px;"></div>
+      <div class="calendar-controls">
+        <!-- Month switcher on the left -->
+        <div class="month-switcher">
+          <button class="nav-button" id="back-month">&lt;</button>
+          <div class="nav-button" id="month-label">November 2025</div>
+          <button class="nav-button" id="forward-month">&gt;</button>
         </div>
 
-        <div class="right-column">
-          <img src="images/calendar.png" alt="Calendar Visualization" class="calendar-image">
-          <div class="calendar-info-boxes">
-            <div class="calendar-box" id="day-view" role="button" aria-label="Switch to Day View">
-              <h3>Day View</h3>
-            </div>
-            <div class="calendar-box" id="week-view" role="button" aria-label="Switch to Week View">
-              <h3>Week View</h3>
-            </div>
-            <div class="calendar-box" id="month-view" role="button" aria-label="Switch to Month View">
-              <h3>Month View</h3>
-            </div>
-          </div>
-        </div>
-      </section>
+        <!-- View dropdown on the right -->
+        <select id="view-selector" class="view-dropdown">
+          <option value="dayGridDay">Day View</option>
+          <option value="dayGridWeek">Week View</option>
+          <option value="dayGridMonth" selected>Month View</option>
+        </select>
+      </div>
+
+      <div id="calendar"></div>
     </main>
 
     <footer>
-      <p>&copy; 2025 Budget Calendar | All Rights Reserved<br>Contact us: 777-888-9999</p>
+      <p>&copy; 2025 SavePath Calendar | All Rights Reserved<br>Contact us: 777-888-9999</p>
     </footer>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const calendarEl = document.getElementById('calendar');
-      const monthSelector = document.getElementById('month-selector');
+  document.addEventListener('DOMContentLoaded', function() {
+    const calendarEl = document.getElementById('calendar');
 
-      const storedTransactions = JSON.parse(localStorage.getItem('transactions')) || [];
+    const storedTransactions = JSON.parse(localStorage.getItem('transactions')) || [];
 
-      const today = new Date();
-      const startRange = new Date(today.getFullYear(), today.getMonth() - 3, 1);
-      const endRange = new Date(today.getFullYear(), today.getMonth() + 4, 0);
+    const today = new Date();
+    const startRange = new Date(today.getFullYear(), today.getMonth() - 3, 1);
+    const endRange = new Date(today.getFullYear(), today.getMonth() + 4, 0);
 
-      function generateRecurringEvents(tx) {
-        const events = [];
-        const baseDate = new Date(tx.date);
-        const color = tx.type === 'income' ? 'green' : 'red';
+    function generateRecurringEvents(tx) {
+      const events = [];
+      const baseDate = new Date(tx.date);
+      const color = tx.type === 'income' ? 'green' : 'red';
 
-        if (tx.frequency === 'single' || !tx.frequency) {
-          if (baseDate >= startRange && baseDate <= endRange) {
+      if (tx.frequency === 'single' || !tx.frequency) {
+        if (baseDate >= startRange && baseDate <= endRange) {
+          events.push({
+            title: `${tx.desc} - $${tx.amount}`,
+            start: tx.date,
+            color: color,
+            allDay: true
+          });
+        }
+      } else {
+        let current = new Date(baseDate);
+        while (current <= endRange) {
+          if (current >= startRange) {
             events.push({
               title: `${tx.desc} - $${tx.amount}`,
-              start: tx.date,
+              start: current.toISOString().slice(0, 10),
               color: color,
               allDay: true
             });
           }
-        } else {
-          let current = new Date(baseDate);
-          while (current <= endRange) {
-            if (current >= startRange) {
-              events.push({
-                title: `${tx.desc} - $${tx.amount}`,
-                start: current.toISOString().slice(0, 10),
-                color: color,
-                allDay: true
-              });
-            }
-            if (tx.frequency === 'weekly') {
-              current.setDate(current.getDate() + 7);
-            } else if (tx.frequency === 'monthly') {
-              current.setMonth(current.getMonth() + 1);
-            } else {
-              break;
-            }
+          if (tx.frequency === 'weekly') {
+            current.setDate(current.getDate() + 7);
+          } else if (tx.frequency === 'monthly') {
+            current.setMonth(current.getMonth() + 1);
+          } else {
+            break;
           }
         }
-
-        return events;
       }
+      return events;
+    }
 
-      const events = storedTransactions.flatMap(tx => generateRecurringEvents(tx));
+    const events = storedTransactions.flatMap(tx => generateRecurringEvents(tx));
 
-      const calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'dayGridMonth',
-        height: 'auto',
-        headerToolbar: false,
-        events: events,
-        dateClick: function(info) {
-          calendar.changeView('dayGridDay', info.dateStr);
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',
+      height: 600, // consistent height across views
+      headerToolbar: false,
+      events: events,
+      dateClick: function(info) {
+        calendar.changeView('dayGridDay', info.dateStr);
+        updateLabel();
+      },
+      views: {
+        dayGridWeek: {
+          dayHeaderFormat: { month: 'numeric', day: 'numeric' }
+        },
+        dayGridDay: {
+          dayHeaderFormat: { month: 'numeric', day: 'numeric' }
+        }
+      },
+      dayCellDidMount: function(arg) {
+        // Only apply in day or week view
+        if (calendar.view.type === 'dayGridDay' || calendar.view.type === 'dayGridWeek') {
+          const cellDate = arg.date.toISOString().slice(0, 10);
+          const hasEvents = calendar.getEvents().some(ev => ev.startStr === cellDate);
+
+          if (!hasEvents) {
+            const msg = document.createElement('div');
+            msg.textContent = calendar.view.type === 'dayGridWeek' ? 'No events' : 'No events';
+            msg.style.color = '#888';
+            msg.style.fontSize = '0.9em';
+            msg.style.textAlign = 'center';
+            msg.style.marginTop = '10px';
+            msg.style.fontFamily = 'Orbitron, sans-serif';
+            msg.style.textShadow = '0 0 6px #00f0ff';
+            arg.el.appendChild(msg);
+          }
+        }
+      },
+      eventDidMount: function(info) {
+        // Larger font in day/week views
+        if (calendar.view.type === 'dayGridDay' || calendar.view.type === 'dayGridWeek') {
+          info.el.style.fontSize = '1.2em';
+          info.el.style.fontWeight = 'bold';
+        } else {
+          info.el.style.fontSize = '0.85em';
+        }
+      }
+    });
+
+    calendar.render();
+
+    // View selector dropdown
+    document.getElementById('view-selector').addEventListener('change', function() {
+      calendar.changeView(this.value);
+      updateLabel();
+    });
+
+    // Month/Week/Day navigation
+    const monthLabel = document.getElementById('month-label');
+    function updateLabel() {
+      monthLabel.textContent = calendar.view.title;
+    }
+
+    document.getElementById('back-month').onclick = () => {
+      if (calendar.view.type === 'dayGridMonth') {
+        calendar.prev();
+      } else if (calendar.view.type === 'dayGridWeek') {
+        calendar.incrementDate({ days: -7 });
+      } else if (calendar.view.type === 'dayGridDay') {
+        calendar.incrementDate({ days: -1 });
+      }
+      updateLabel();
+    };
+
+    document.getElementById('forward-month').onclick = () => {
+      if (calendar.view.type === 'dayGridMonth') {
+        calendar.next();
+      } else if (calendar.view.type === 'dayGridWeek') {
+        calendar.incrementDate({ days: 7 });
+      } else if (calendar.view.type === 'dayGridDay') {
+        calendar.incrementDate({ days: 1 });
+      }
+      updateLabel();
+    };
+
+    // Optional: keep your nav-select logic if you use it elsewhere
+    const navSelect = document.getElementById('nav-select');
+    if (navSelect) {
+      navSelect.addEventListener('change', (e) => {
+        const page = e.target.value;
+        if (page) {
+          window.location.href = page;
         }
       });
-
-      calendar.render();
-
-      document.getElementById('day-view').onclick = () => calendar.changeView('dayGridDay');
-      document.getElementById('week-view').onclick = () => calendar.changeView('dayGridWeek');
-      document.getElementById('month-view').onclick = () => calendar.changeView('dayGridMonth');
-
-      for (let offset = -3; offset <= 3; offset++) {
-        const date = new Date(today.getFullYear(), today.getMonth() + offset, 1);
-        const value = date.toISOString().slice(0, 10);
-        const label = date.toLocaleString('default', { month: 'long', year: 'numeric' });
-        const option = document.createElement('option');
-        option.value = value;
-        option.textContent = label;
-        if (offset === 0) option.selected = true;
-        monthSelector.appendChild(option);
-      }
-
-      monthSelector.addEventListener('change', function() {
-        const selectedDate = new Date(this.value);
-        calendar.gotoDate(selectedDate);
-      });
-
-      document.getElementById('back-day').onclick = () => calendar.incrementDate({ days: -1 });
-      document.getElementById('forward-day').onclick = () => calendar.incrementDate({ days: 1 });
-      document.getElementById('back-week').onclick = () => calendar.incrementDate({ days: -7 });
-      document.getElementById('forward-week').onclick = () => calendar.incrementDate({ days: 7 });
-    });
-	
-	document.getElementById('nav-select').addEventListener('change', (e) => {
-      const page = e.target.value;
-      if (page) {
-        window.location.href = page;
-      }
-    });
-  </script>
+    }
+  });
+</script>
 </body>
 </html>
