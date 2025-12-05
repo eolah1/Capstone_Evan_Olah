@@ -211,7 +211,7 @@
     <header>
       <h1 class="site-title">SavePath</h1>
       <nav class="top-nav">
-        <a href="index.html" class="home-link">Home</a>
+        <a href="index.html" class="nav-link">Home</a>
         <a href="dashboard.html" class="nav-link">Dashboard</a>
         <a href="visuals.html" class="nav-link">Visuals</a>
         <a href="goals.html" class="nav-link">Goals</a>
@@ -247,11 +247,9 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
-  <script>
+<script>
   document.addEventListener('DOMContentLoaded', function() {
     const calendarEl = document.getElementById('calendar');
-
-    const storedTransactions = JSON.parse(localStorage.getItem('transactions')) || [];
 
     const today = new Date();
     const startRange = new Date(today.getFullYear(), today.getMonth() - 3, 1);
@@ -259,10 +257,10 @@
 
     function generateRecurringEvents(tx) {
       const events = [];
-      const baseDate = new Date(tx.date);
+      const baseDate = new Date(tx.date || tx.startDate || tx.nextDueDate);
       const color = tx.type === 'income' ? 'green' : 'red';
 
-      if (tx.frequency === 'single' || !tx.frequency) {
+      if (tx.recurring !== true) {
         if (baseDate >= startRange && baseDate <= endRange) {
           events.push({
             title: `${tx.desc} - $${tx.amount}`,
@@ -272,7 +270,7 @@
           });
         }
       } else {
-        let current = new Date(baseDate);
+        let current = new Date(tx.startDate || tx.nextDueDate);
         while (current <= endRange) {
           if (current >= startRange) {
             events.push({
@@ -286,6 +284,8 @@
             current.setDate(current.getDate() + 7);
           } else if (tx.frequency === 'monthly') {
             current.setMonth(current.getMonth() + 1);
+          } else if (tx.frequency === 'yearly') {
+            current.setFullYear(current.getFullYear() + 1);
           } else {
             break;
           }
@@ -294,34 +294,32 @@
       return events;
     }
 
-    const events = storedTransactions.flatMap(tx => generateRecurringEvents(tx));
+    // Build events from localStorage
+    function buildEvents() {
+      const storedTransactions = JSON.parse(localStorage.getItem('transactions')) || [];
+      return storedTransactions.flatMap(tx => generateRecurringEvents(tx));
+    }
 
     const calendar = new FullCalendar.Calendar(calendarEl, {
       initialView: 'dayGridMonth',
-      height: 600, // consistent height across views
+      height: 600,
       headerToolbar: false,
-      events: events,
+      events: buildEvents(),
       dateClick: function(info) {
         calendar.changeView('dayGridDay', info.dateStr);
         updateLabel();
       },
       views: {
-        dayGridWeek: {
-          dayHeaderFormat: { month: 'numeric', day: 'numeric' }
-        },
-        dayGridDay: {
-          dayHeaderFormat: { month: 'numeric', day: 'numeric' }
-        }
+        dayGridWeek: { dayHeaderFormat: { month: 'numeric', day: 'numeric' } },
+        dayGridDay: { dayHeaderFormat: { month: 'numeric', day: 'numeric' } }
       },
       dayCellDidMount: function(arg) {
-        // Only apply in day or week view
         if (calendar.view.type === 'dayGridDay' || calendar.view.type === 'dayGridWeek') {
           const cellDate = arg.date.toISOString().slice(0, 10);
           const hasEvents = calendar.getEvents().some(ev => ev.startStr === cellDate);
-
           if (!hasEvents) {
             const msg = document.createElement('div');
-            msg.textContent = calendar.view.type === 'dayGridWeek' ? 'No events' : 'No events';
+            msg.textContent = 'No events';
             msg.style.color = '#888';
             msg.style.fontSize = '0.9em';
             msg.style.textAlign = 'center';
@@ -333,7 +331,6 @@
         }
       },
       eventDidMount: function(info) {
-        // Larger font in day/week views
         if (calendar.view.type === 'dayGridDay' || calendar.view.type === 'dayGridWeek') {
           info.el.style.fontSize = '1.2em';
           info.el.style.fontWeight = 'bold';
@@ -345,13 +342,20 @@
 
     calendar.render();
 
+    // Refresh events when localStorage changes (e.g., Quick Add updates)
+    window.addEventListener("storage", function(event) {
+      if (event.key === "transactions") {
+        calendar.removeAllEvents();
+        calendar.addEventSource(buildEvents());
+      }
+    });
+
     // View selector dropdown
     document.getElementById('view-selector').addEventListener('change', function() {
       calendar.changeView(this.value);
       updateLabel();
     });
 
-    // Month/Week/Day navigation
     const monthLabel = document.getElementById('month-label');
     function updateLabel() {
       monthLabel.textContent = calendar.view.title;
@@ -379,7 +383,6 @@
       updateLabel();
     };
 
-    // Optional: keep your nav-select logic if you use it elsewhere
     const navSelect = document.getElementById('nav-select');
     if (navSelect) {
       navSelect.addEventListener('change', (e) => {

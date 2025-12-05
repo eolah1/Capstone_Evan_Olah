@@ -182,7 +182,7 @@
     <header>
       <h1 class="site-title">Save Path</h1>
       <nav class="top-nav">
-        <a href="index.html" class="home-link">Home</a>
+        <a href="index.html" class="nav-link">Home</a>
         <a href="dashboard.html" class="nav-link">Dashboard</a>
         <a href="visuals.html" class="nav-link">Visuals</a>
         <a href="goals.html" class="nav-link">Goals</a>
@@ -265,6 +265,7 @@
   const expenseCard = document.getElementById('expense-card');
   const recurringCard = document.getElementById('recurring-card');
 
+  // Toggle cards
   document.getElementById('choose-expense').addEventListener('click', () => {
     choiceSection.style.display = 'none';
     expenseCard.classList.add('active');
@@ -281,9 +282,65 @@
     choiceSection.style.display = 'flex';
   }
 
+  // Utility: calculate next due date based on frequency
+  function calculateNextDueDate(startDate, frequency) {
+    const date = new Date(startDate);
+
+    switch (frequency) {
+      case "weekly":
+        date.setDate(date.getDate() + 7);
+        break;
+      case "monthly":
+        date.setMonth(date.getMonth() + 1);
+        break;
+      case "yearly":
+        date.setFullYear(date.getFullYear() + 1);
+        break;
+      default:
+        console.warn("Unsupported frequency:", frequency);
+    }
+
+    return date.toISOString().split("T")[0]; // store as YYYY-MM-DD
+  }
+
+  // Helper: refresh dashboard upcoming payments list
+  function refreshUpcomingPayments() {
+    const transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+    const today = new Date();
+    const tomorrow = new Date();
+    tomorrow.setDate(today.getDate() + 1);
+
+    const paymentList = document.getElementById('payment-list');
+    if (!paymentList) return; // only run if dashboard element exists
+
+    paymentList.innerHTML = '';
+
+    transactions.forEach(tx => {
+      const txDate = tx.recurring ? new Date(tx.nextDueDate) : new Date(tx.date);
+
+      if (
+        txDate.toDateString() === today.toDateString() ||
+        txDate.toDateString() === tomorrow.toDateString()
+      ) {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          ${tx.desc} - $${tx.amount} (${txDate.toDateString()})
+          ${tx.recurring ? "<span class='badge'>Recurring</span>" : ""}
+        `;
+        paymentList.appendChild(li);
+      }
+    });
+
+    if (!paymentList.hasChildNodes()) {
+      paymentList.innerHTML = '<li>No payments today or tomorrow.</li>';
+    }
+  }
+
+  // Expense form submission
   document.getElementById('expense-form').addEventListener('submit', function(e) {
     e.preventDefault();
     const transaction = {
+      id: Date.now(),
       desc: document.getElementById('desc').value,
       amount: parseFloat(document.getElementById('amount').value),
       type: document.getElementById('type').value,
@@ -295,23 +352,34 @@
     localStorage.setItem('transactions', JSON.stringify(transactions));
     alert('Transaction added!');
     this.reset();
+    goBack();
+    refreshUpcomingPayments(); // update dashboard
   });
 
+  // Recurring form submission
   document.getElementById('recurring-form').addEventListener('submit', function(e) {
     e.preventDefault();
+    const startDate = document.getElementById('startDate').value;
+    const frequency = document.getElementById('frequency').value;
+
     const recurring = {
+      id: Date.now(),
       desc: document.getElementById('rdesc').value,
       amount: parseFloat(document.getElementById('ramount').value),
-      frequency: document.getElementById('frequency').value,
-      startDate: document.getElementById('startDate').value,
+      frequency,
+      startDate,
       endDate: document.getElementById('endDate').value || null,
+      nextDueDate: calculateNextDueDate(startDate, frequency),
       recurring: true
     };
+
     let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
     transactions.push(recurring);
     localStorage.setItem('transactions', JSON.stringify(transactions));
     alert('Recurring payment added!');
     this.reset();
+    goBack();
+    refreshUpcomingPayments(); // update dashboard
   });
 </script>
 </body>

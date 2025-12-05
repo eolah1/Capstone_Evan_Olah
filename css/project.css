@@ -5,6 +5,8 @@
 :root {
   --primary: #2979ff;
   --secondary: #0c1624;
+  --secondary-dark: #0b1320; /* darker than header */
+  --hover-dark: #050a12;     /* even darker for hover */
   --accent: #00ffff;
   --cta: #ff4081;
   --white: #ffffff;
@@ -52,10 +54,25 @@ header {
   color: var(--text-light);
   text-decoration: none;
   font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 6px;
+  background-color: transparent;
+  transition: background-color 0.2s;
 }
 
 .top-nav a:hover {
+  background-color: var(--secondary-dark);
   color: var(--accent);
+}
+
+.top-nav .quick-add-btn {
+  color: var(--cta);
+  background-color: transparent;
+}
+
+.top-nav .quick-add-btn:hover {
+  color: var(--accent);
+  background-color: var(--secondary-dark);
 }
 
 .top-nav select {
@@ -64,14 +81,6 @@ header {
   border: none;
   border-radius: 6px;
   padding: 5px 10px;
-}
-
-.top-nav .quick-add-btn {
-  color: var(--cta);
-}
-
-.top-nav .quick-add-btn:hover {
-  color: var(--accent);
 }
 
 .controls {
@@ -237,23 +246,50 @@ footer {
   display: none;
 }
 
-@media (max-width: 900px) {
-  .top-nav {
+/* Mobile header adjustments */
+@media (max-width: 600px) {
+  header {
     flex-direction: column;
-    gap: 1rem;
+    align-items: stretch;
+    text-align: center;
+    padding: 15px;
   }
 
-  .content-container {
+  .site-title {
+    margin-bottom: 20px;
+    font-size: 2rem;
+    color: var(--accent);
+  }
+
+  .top-nav {
+	display: flex;
     flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    align-items: stretch;
+  }
+
+  .top-nav a {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    border-radius: 0;
+    background-color: var(--secondary-dark);
+    color: var(--text-light);
+    font-weight: 600;
     text-align: center;
   }
 
-  .left-column, .right-column {
-    flex: 1 1 100%;
-    padding: 0;
+  .top-nav a:hover {
+    background-color: var(--hover-dark);
+    color: var(--accent);
   }
 
-  .dashboard-preview {
-    margin-top: 2rem;
+  .top-nav .quick-add-btn {
+    color: var(--cta);
+  }
+
+  .top-nav .quick-add-btn:hover {
+    color: var(--accent);
   }
 }

@@ -18,6 +18,7 @@
     .hero-banner {
       background: linear-gradient(90deg, var(--secondary), var(--primary));
       color: var(--text-light);
+	  font-family: 'Orbitron', sans-serif;
       padding: 40px;
       border-radius: 8px;
       margin: 20px;
@@ -25,9 +26,10 @@
     }
 
     .hero-banner h2 {
-      font-size: 2.2rem;
+      font-size: 3rem;
+      font-family: 'Orbitron', sans-serif;
+      margin-bottom: 20px;
       color: var(--accent);
-      margin-bottom: 10px;
     }
 
     .hero-banner p {
@@ -36,11 +38,12 @@
     }
 
     .content-container {
-      display: grid;
+      display: flex;
       grid-template-columns: 1fr 1fr;
       gap: 40px;
       align-items: start;
       padding: 40px;
+	  justify-content: center;
     }
 
     .goal-form {
@@ -178,7 +181,7 @@
     <header>
       <h1 class="site-title">Save Path</h1>
       <nav class="top-nav">
-        <a href="index.html" class="home-link">Home</a>
+        <a href="index.html" class="nav-link">Home</a>
         <a href="dashboard.html" class="nav-link">Dashboard</a>
         <a href="visuals.html" class="nav-link">Visuals</a>
         <a href="goals.html" class="nav-link">Goals</a>
@@ -197,7 +200,6 @@
       </section>
 
       <section class="content-container">
-        <div class="left-column">
           <form action="https://webdevbasics.net/scripts/demo.php" method="post" class="goal-form">
             <h3>Set Your Financial Goal</h3>
 
@@ -253,18 +255,6 @@
 
             <button type="submit" class="submit-btn">Save Goal</button>
           </form>
-        </div>
-
-        <div class="right-column">
-          <div class="calendar-info-boxes">
-            <div class="calendar-box" id="add-goals" role="button" aria-label="Add Goals">
-              <h3>Add Goals</h3>
-            </div>
-            <div class="calendar-box" id="progress" role="button" aria-label="View Progress">
-              <h3>Progress</h3>
-            </div>
-          </div>
-        </div>
       </section>
     </main>
 
@@ -274,38 +264,59 @@
   </div>
   
   <script>
-    const targetAmountInput = document.getElementById('targetAmount');
-   const currentAmountInput = document.getElementById('currentAmount');
-    const targetAmountError = document.getElementById('targetAmountError');
-    const currentAmountError = document.getElementById('currentAmountError');
+  const targetAmountInput = document.getElementById('targetAmount');
+  const currentAmountInput = document.getElementById('currentAmount');
+  const targetAmountError = document.getElementById('targetAmountError');
+  const currentAmountError = document.getElementById('currentAmountError');
+  const goalNameInput = document.getElementById('goalName'); // assumes you have a name field
 
-    function validateNumber(input, errorElement) {
-      if (input.value.trim() !== "" && isNaN(input.value)) {
-        errorElement.textContent = "Must be a digit";
-        errorElement.style.display = "block";
-      } else {
-        errorElement.textContent = "";
-        errorElement.style.display = "none";
-      }
+  function validateNumber(input, errorElement) {
+    if (input.value.trim() !== "" && isNaN(input.value)) {
+      errorElement.textContent = "Must be a digit";
+      errorElement.style.display = "block";
+    } else {
+      errorElement.textContent = "";
+      errorElement.style.display = "none";
+    }
+  }
+
+  targetAmountInput.addEventListener('input', () => {
+    validateNumber(targetAmountInput, targetAmountError);
+  });
+
+  currentAmountInput.addEventListener('input', () => {
+    validateNumber(currentAmountInput, currentAmountError);
+  });
+
+  const goalForm = document.querySelector('.goal-form');
+  goalForm.addEventListener('submit', function(e) {
+    e.preventDefault(); // stop page reload
+
+    validateNumber(targetAmountInput, targetAmountError);
+    validateNumber(currentAmountInput, currentAmountError);
+
+    if (targetAmountError.textContent || currentAmountError.textContent) {
+      return; // don’t save if errors
     }
 
-    targetAmountInput.addEventListener('input', () => {
-      validateNumber(targetAmountInput, targetAmountError);
-    });
+    // Build goal object in the format dashboard expects
+    const newGoal = {
+      name: goalNameInput.value.trim(),
+      saved: parseFloat(currentAmountInput.value) || 0,
+      target: parseFloat(targetAmountInput.value) || 1
+    };
 
-    currentAmountInput.addEventListener('input', () => {
-      validateNumber(currentAmountInput, currentAmountError);
-    });
+    // Save to localStorage
+    let goals = JSON.parse(localStorage.getItem('goals')) || [];
+    goals.push(newGoal);
+    localStorage.setItem('goals', JSON.stringify(goals));
 
-    const goalForm = document.querySelector('.goal-form');
-    goalForm.addEventListener('submit', function(e) {
-      validateNumber(targetAmountInput, targetAmountError);
-      validateNumber(currentAmountInput, currentAmountError);
+    // Optional: clear form
+    goalForm.reset();
 
-      if (targetAmountError.textContent || currentAmountError.textContent) {
-        e.preventDefault();
-      }
-    });
-  </script>
+    // Optional: give feedback
+    alert("Goal saved!");
+  });
+</script>
 </body>
 </html>
