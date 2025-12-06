@@ -246,7 +246,6 @@ footer {
   display: none;
 }
 
-/* Mobile header adjustments */
 @media (max-width: 600px) {
   header {
     flex-direction: column;

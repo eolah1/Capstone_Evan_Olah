@@ -202,7 +202,6 @@
     const tbody = document.getElementById('transactions-body');
     const transactions = JSON.parse(localStorage.getItem('transactions')) || [];
 
-    // Sort newest first
     transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
 
     function renderTransactions(count) {

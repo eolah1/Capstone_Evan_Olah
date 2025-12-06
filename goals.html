@@ -268,7 +268,7 @@
   const currentAmountInput = document.getElementById('currentAmount');
   const targetAmountError = document.getElementById('targetAmountError');
   const currentAmountError = document.getElementById('currentAmountError');
-  const goalNameInput = document.getElementById('goalName'); // assumes you have a name field
+  const goalNameInput = document.getElementById('goalName'); 
 
   function validateNumber(input, errorElement) {
     if (input.value.trim() !== "" && isNaN(input.value)) {
@@ -290,31 +290,27 @@
 
   const goalForm = document.querySelector('.goal-form');
   goalForm.addEventListener('submit', function(e) {
-    e.preventDefault(); // stop page reload
+    e.preventDefault(); 
 
     validateNumber(targetAmountInput, targetAmountError);
     validateNumber(currentAmountInput, currentAmountError);
 
     if (targetAmountError.textContent || currentAmountError.textContent) {
-      return; // don’t save if errors
+      return;
     }
 
-    // Build goal object in the format dashboard expects
     const newGoal = {
       name: goalNameInput.value.trim(),
       saved: parseFloat(currentAmountInput.value) || 0,
       target: parseFloat(targetAmountInput.value) || 1
     };
 
-    // Save to localStorage
     let goals = JSON.parse(localStorage.getItem('goals')) || [];
     goals.push(newGoal);
     localStorage.setItem('goals', JSON.stringify(goals));
 
-    // Optional: clear form
     goalForm.reset();
 
-    // Optional: give feedback
     alert("Goal saved!");
   });
 </script>

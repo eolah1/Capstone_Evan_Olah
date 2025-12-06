@@ -223,14 +223,12 @@
 
     <main>
       <div class="calendar-controls">
-        <!-- Month switcher on the left -->
         <div class="month-switcher">
           <button class="nav-button" id="back-month">&lt;</button>
           <div class="nav-button" id="month-label">November 2025</div>
           <button class="nav-button" id="forward-month">&gt;</button>
         </div>
 
-        <!-- View dropdown on the right -->
         <select id="view-selector" class="view-dropdown">
           <option value="dayGridDay">Day View</option>
           <option value="dayGridWeek">Week View</option>
@@ -294,7 +292,6 @@
       return events;
     }
 
-    // Build events from localStorage
     function buildEvents() {
       const storedTransactions = JSON.parse(localStorage.getItem('transactions')) || [];
       return storedTransactions.flatMap(tx => generateRecurringEvents(tx));
@@ -342,7 +339,6 @@
 
     calendar.render();
 
-    // Refresh events when localStorage changes (e.g., Quick Add updates)
     window.addEventListener("storage", function(event) {
       if (event.key === "transactions") {
         calendar.removeAllEvents();
@@ -350,7 +346,6 @@
       }
     });
 
-    // View selector dropdown
     document.getElementById('view-selector').addEventListener('change', function() {
       calendar.changeView(this.value);
       updateLabel();

@@ -193,7 +193,6 @@
     </header>
 
     <main>
-      <!-- Choice Section -->
 	  <h1 class="quickadd-title">Quick Add</h1>
       <section id="quickadd-choice" class="quickadd-choice">
         <div id="choose-expense" class="dashboard-box">
@@ -208,9 +207,7 @@
         </div>
       </section>
 
-      <!-- Container for cards -->
       <div class="quickadd-container">
-        <!-- Expense Card -->
         <div class="quickadd-card" id="expense-card">
           <h2>Add New Expense/Income</h2>
           <form id="expense-form">
@@ -230,7 +227,6 @@
           <button class="back-btn" onclick="goBack()">← Back to Options</button>
         </div>
 
-        <!-- Recurring Card -->
         <div class="quickadd-card" id="recurring-card">
           <h2>Add Recurring Payment</h2>
           <form id="recurring-form">
@@ -265,7 +261,6 @@
   const expenseCard = document.getElementById('expense-card');
   const recurringCard = document.getElementById('recurring-card');
 
-  // Toggle cards
   document.getElementById('choose-expense').addEventListener('click', () => {
     choiceSection.style.display = 'none';
     expenseCard.classList.add('active');
@@ -282,7 +277,6 @@
     choiceSection.style.display = 'flex';
   }
 
-  // Utility: calculate next due date based on frequency
   function calculateNextDueDate(startDate, frequency) {
     const date = new Date(startDate);
 
@@ -300,10 +294,9 @@
         console.warn("Unsupported frequency:", frequency);
     }
 
-    return date.toISOString().split("T")[0]; // store as YYYY-MM-DD
+    return date.toISOString().split("T")[0];
   }
 
-  // Helper: refresh dashboard upcoming payments list
   function refreshUpcomingPayments() {
     const transactions = JSON.parse(localStorage.getItem('transactions')) || [];
     const today = new Date();
@@ -311,7 +304,7 @@
     tomorrow.setDate(today.getDate() + 1);
 
     const paymentList = document.getElementById('payment-list');
-    if (!paymentList) return; // only run if dashboard element exists
+    if (!paymentList) return;
 
     paymentList.innerHTML = '';
 
@@ -336,7 +329,6 @@
     }
   }
 
-  // Expense form submission
   document.getElementById('expense-form').addEventListener('submit', function(e) {
     e.preventDefault();
     const transaction = {
@@ -353,10 +345,9 @@
     alert('Transaction added!');
     this.reset();
     goBack();
-    refreshUpcomingPayments(); // update dashboard
+    refreshUpcomingPayments(); 
   });
 
-  // Recurring form submission
   document.getElementById('recurring-form').addEventListener('submit', function(e) {
     e.preventDefault();
     const startDate = document.getElementById('startDate').value;
@@ -379,7 +370,7 @@
     alert('Recurring payment added!');
     this.reset();
     goBack();
-    refreshUpcomingPayments(); // update dashboard
+    refreshUpcomingPayments();
   });
 </script>
 </body>

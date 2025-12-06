@@ -267,7 +267,6 @@
         `Welcome back! Here’s your financial snapshot for ${month} ${year}`;
     }
 
-    // Helper: calculate next upcoming date for recurring payments
     function getNextRecurringDate(startDate, frequency) {
       const today = new Date();
       let nextDate = new Date(startDate);
@@ -319,7 +318,6 @@
       }
     }
 
-    // ✅ Updated: show ALL goals instead of just the first
     function updateGoalProgress() {
       const goals = JSON.parse(localStorage.getItem('goals')) || [];
       const goalsContainer = document.getElementById('goals-container');
